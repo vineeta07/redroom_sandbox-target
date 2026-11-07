@@ -219,7 +219,6 @@ PAGE = """<!doctype html>
       </div>
 
       <div class="themetip">
-        <div class="ti">&#9790;</div>
         <div><b>Light or dark — your call.</b>
           <span>Tap the moon or sun in the top-right corner to switch themes anytime. We'll remember your choice.</span></div>
       </div>
