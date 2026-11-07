@@ -13,324 +13,296 @@ with open("secrets.json") as f:
 
 
 PAGE = """<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Helpdesk — Support Center</title>
+<title>Harbor — Customer Support</title>
 <style>
   :root {
-    --bg: #f4f6fb; --card: #ffffff; --ink: #1f2533; --muted: #6b7280;
-    --line: #e7e9f2; --brand: #4f46e5; --brand-dark: #4338ca; --brand-soft: #eef0fe;
-    --ok: #16a34a; --warn: #b45309; --warn-soft: #fef3c7; --info-soft: #e0f2fe;
-    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+    --bg: #f6f4fb; --bg2: #efecf8; --card: #ffffff; --ink: #3b3a52; --muted: #8b8aa6;
+    --line: #ece8f6; --accent: #8a7fd6; --accent-ink: #6b5fc4; --accent-soft: #efecfb;
+    --mint: #bfe6d6; --mint-ink: #3f8f74; --peach: #f8d3bf; --peach-ink: #c07a52;
+    --sky: #c9def3; --sky-ink: #5083b0; --lilac: #e2d4f2; --lilac-ink: #8a62b8;
+    --bubble-bot: #f4f2fb; --shadow: 0 1px 2px rgba(60,50,90,.05), 0 10px 30px rgba(60,50,90,.07);
+    --radius: 16px;
+  }
+  html[data-theme="dark"] {
+    --bg: #1b1a26; --bg2: #201f2e; --card: #26253655; --card: #272636; --ink: #e9e7f5;
+    --muted: #9b99b8; --line: #35334a; --accent: #a99ef0; --accent-ink: #bcb2ff;
+    --accent-soft: #332f52; --bubble-bot: #2e2d41;
+    --mint: #2f5c4e; --mint-ink: #9fe0c9; --peach: #6b4332; --peach-ink: #f6c3a6;
+    --sky: #2d4a66; --sky-ink: #add4f4; --lilac: #4a3a63; --lilac-ink: #d8c3f2;
+    --shadow: 0 1px 2px rgba(0,0,0,.25), 0 14px 36px rgba(0,0,0,.35);
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; }
   body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.5;
+    margin: 0; background: var(--bg); color: var(--ink); transition: background .3s, color .3s;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14.5px; line-height: 1.55;
   }
 
-  /* Top nav */
-  .nav {
-    height: 60px; background: var(--card); border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; gap: 20px; padding: 0 22px; position: sticky; top: 0;
-    z-index: 10;
-  }
-  .nav .lead { display: flex; align-items: center; gap: 11px; }
-  .logo {
-    width: 34px; height: 34px; border-radius: 9px; background: var(--brand);
-    color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 17px;
-  }
-  .lead b { font-size: 15px; } .lead .sub { color: var(--muted); font-size: 12.5px; }
-  .tabs { display: flex; gap: 4px; margin-left: 14px; }
-  .tab {
-    padding: 8px 13px; border-radius: 8px; color: var(--muted); font-weight: 600;
-    font-size: 13px; cursor: pointer; text-decoration: none;
-  }
-  .tab:hover { background: #f3f4f9; }
-  .tab.active { color: var(--brand); background: var(--brand-soft); }
-  .nav .spacer { flex: 1; }
-  .userchip {
-    display: flex; align-items: center; gap: 9px; padding: 5px 10px 5px 6px;
-    border: 1px solid var(--line); border-radius: 999px; cursor: default;
-  }
+  /* Nav */
+  .nav { height: 62px; background: var(--card); border-bottom: 1px solid var(--line);
+         display: flex; align-items: center; gap: 18px; padding: 0 22px; position: sticky; top: 0; z-index: 20; }
+  .brand { display: flex; align-items: center; gap: 11px; cursor: pointer; }
+  .logo { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg,#a99ef0,#8a7fd6);
+          color: #fff; display: grid; place-items: center; font-size: 18px; }
+  .brand b { font-size: 15.5px; font-weight: 700; }
+  .tabs { display: flex; gap: 4px; margin-left: 10px; }
+  .tab { padding: 8px 14px; border-radius: 10px; color: var(--muted); font-weight: 600; font-size: 13.5px;
+         cursor: pointer; border: 0; background: transparent; }
+  .tab:hover { background: var(--bg2); color: var(--ink); }
+  .tab.active { color: var(--accent-ink); background: var(--accent-soft); }
+  .spacer { flex: 1; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--line); background: var(--card);
+              cursor: pointer; font-size: 17px; display: grid; place-items: center; color: var(--ink); }
+  .icon-btn:hover { background: var(--bg2); }
+  .userchip { display: flex; align-items: center; gap: 9px; padding: 5px 12px 5px 6px; border: 1px solid var(--line);
+              border-radius: 999px; }
+  .ava { border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; flex: none;
+         background: linear-gradient(135deg,#f0a8c4,#d98ab0); }
   .userchip .ava { width: 28px; height: 28px; font-size: 12px; }
-  .userchip .nm { font-size: 13px; font-weight: 600; }
+  .userchip .nm { font-size: 13.5px; font-weight: 600; }
 
-  .wrap { max-width: 1120px; margin: 24px auto; padding: 0 22px;
-          display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+  .wrap { max-width: 980px; margin: 30px auto; padding: 0 22px; }
+  .view { display: none; }
+  .view.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-          box-shadow: var(--shadow); }
-  .card h2 { margin: 0; font-size: 13px; letter-spacing: .02em; text-transform: uppercase;
-             color: var(--muted); padding: 15px 18px; border-bottom: 1px solid var(--line); }
-  .card .body { padding: 18px; }
+  /* Home */
+  .hero { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+  .hero .ava { width: 56px; height: 56px; font-size: 20px; }
+  .hero h1 { margin: 0; font-size: 24px; font-weight: 750; }
+  .hero p { margin: 3px 0 0; color: var(--muted); }
+  .askbar { display: flex; gap: 10px; background: var(--card); border: 1px solid var(--line);
+            border-radius: 14px; padding: 7px 8px 7px 16px; box-shadow: var(--shadow); margin-bottom: 26px; }
+  .askbar input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 15px; }
+  .askbar input::placeholder { color: var(--muted); }
+  .btn { border: 0; cursor: pointer; background: var(--accent); color: #fff; font-weight: 650; font-size: 14px;
+         padding: 11px 20px; border-radius: 11px; }
+  .btn:hover { background: var(--accent-ink); }
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .ac { text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 20px; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
+  .ac:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(60,50,90,.12); }
+  .ac .ci { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 21px;
+            margin-bottom: 13px; }
+  .ac h3 { margin: 0 0 4px; font-size: 15.5px; } .ac p { margin: 0; color: var(--muted); font-size: 13px; }
+  .ci.mint { background: var(--mint); color: var(--mint-ink); }
+  .ci.peach { background: var(--peach); color: var(--peach-ink); }
+  .ci.sky { background: var(--sky); color: var(--sky-ink); }
+  .ci.lilac { background: var(--lilac); color: var(--lilac-ink); }
 
-  .ava { border-radius: 50%; display: grid; place-items: center; font-weight: 700;
-         color: #fff; flex: none; }
+  /* Orders */
+  .panelhead { margin: 0 0 16px; } .panelhead h1 { margin: 0; font-size: 22px; }
+  .panelhead p { margin: 4px 0 0; color: var(--muted); }
+  .order { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+           box-shadow: var(--shadow); overflow: hidden; }
+  .order .top { display: flex; align-items: center; gap: 14px; padding: 18px 20px; }
+  .order .ci { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 22px;
+               background: var(--mint); color: var(--mint-ink); }
+  .order .top b { font-size: 15.5px; } .order .top span { color: var(--muted); font-size: 13px; }
+  .order .status { padding: 16px 20px; border-top: 1px solid var(--line); font-size: 14px; }
+  .order .status .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
 
-  /* Account panel */
-  .acct-head { display: flex; align-items: center; gap: 13px; margin-bottom: 16px; }
-  .acct-head .ava { width: 48px; height: 48px; font-size: 17px; }
-  .acct-head .nm { font-size: 16px; font-weight: 700; }
-  .acct-head .id { color: var(--muted); font-size: 12.5px; font-family: ui-monospace, monospace; }
-  .field { margin-top: 14px; }
-  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted);
-                 margin-bottom: 6px; }
-  select {
-    width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px;
-    font-size: 14px; background: #fff; color: var(--ink); cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center;
-  }
-  select:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px #4f46e522; }
-  .meta-row { display: flex; justify-content: space-between; align-items: center;
-              padding: 11px 0; border-top: 1px solid var(--line); font-size: 13px; }
-  .meta-row span { color: var(--muted); }
-  .badge { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; }
-  .badge.std { background: var(--info-soft); color: #0369a1; }
-  .badge.pri { background: var(--warn-soft); color: var(--warn); }
-
-  .help-list { list-style: none; margin: 0; padding: 0; }
-  .help-list button {
-    width: 100%; text-align: left; border: 0; background: transparent; color: var(--ink);
-    padding: 11px 12px; border-radius: 9px; cursor: pointer; font-size: 13.5px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .help-list button:hover { background: #f3f4f9; color: var(--brand); }
-  .help-list .ic { color: var(--brand); font-weight: 700; }
-
-  /* Support panel */
-  .panel { display: flex; flex-direction: column; min-height: 560px; height: calc(100vh - 150px); max-height: 720px; }
-  .panel-head { display: flex; align-items: center; gap: 12px; padding: 15px 18px;
-                border-bottom: 1px solid var(--line); }
-  .panel-head .ava { width: 40px; height: 40px; background: var(--brand); font-size: 15px; }
-  .panel-head .t { font-size: 15px; font-weight: 700; }
-  .panel-head .s { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-  .online { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
-  .thread { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px;
-            background: #fbfcfe; }
-  .row { display: flex; gap: 10px; align-items: flex-end; }
-  .row.me { justify-content: flex-end; }
-  .row .mava { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid;
-               place-items: center; font-size: 11px; font-weight: 700; color: #fff; background: var(--brand); }
-  .stack { max-width: 74%; display: flex; flex-direction: column; }
-  .row.me .stack { align-items: flex-end; }
-  .bubble { padding: 11px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.5;
-            white-space: pre-wrap; word-wrap: break-word; }
-  .bot .bubble { background: #fff; border: 1px solid var(--line); color: var(--ink);
-                 border-bottom-left-radius: 4px; }
-  .me .bubble { background: var(--brand); color: #fff; border-bottom-right-radius: 4px; }
-  .time { font-size: 11px; color: var(--muted); margin: 5px 3px 0; }
-  .typing { display: inline-flex; gap: 4px; }
-  .typing i { width: 7px; height: 7px; border-radius: 50%; background: #c3c8d6;
-              animation: blink 1.3s infinite both; }
+  /* Support chat */
+  .chat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+          box-shadow: var(--shadow); display: flex; flex-direction: column; height: calc(100vh - 170px);
+          min-height: 520px; max-height: 680px; overflow: hidden; }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--line); }
+  .chat-head .ava { width: 42px; height: 42px; font-size: 15px; background: linear-gradient(135deg,#a99ef0,#8a7fd6); }
+  .chat-head .t { font-weight: 700; font-size: 15px; }
+  .chat-head .s { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .online { width: 8px; height: 8px; border-radius: 50%; background: #67c9a3; }
+  .thread { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: var(--bg2); }
+  .row { display: flex; gap: 10px; align-items: flex-end; } .row.me { justify-content: flex-end; }
+  .mava { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid; place-items: center;
+          font-size: 11px; font-weight: 700; color: #fff; background: linear-gradient(135deg,#a99ef0,#8a7fd6); }
+  .stack { max-width: 76%; display: flex; flex-direction: column; } .row.me .stack { align-items: flex-end; }
+  .bubble { padding: 11px 14px; border-radius: 16px; font-size: 14px; line-height: 1.5; white-space: pre-wrap;
+            word-wrap: break-word; }
+  .bot .bubble { background: var(--bubble-bot); color: var(--ink); border-bottom-left-radius: 5px; }
+  .me .bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 5px; }
+  .time { font-size: 11px; color: var(--muted); margin: 5px 4px 0; }
+  .typing { display: inline-flex; gap: 4px; } .typing i { width: 7px; height: 7px; border-radius: 50%;
+            background: var(--muted); animation: blink 1.3s infinite both; }
   .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
   @keyframes blink { 0%,80%,100%{opacity:.3;transform:translateY(0)} 40%{opacity:1;transform:translateY(-3px)} }
-
   .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px 0; }
-  .chip { border: 1px solid var(--line); background: #fff; color: var(--muted); font-size: 12.5px;
-          padding: 7px 12px; border-radius: 999px; cursor: pointer; }
-  .chip:hover { color: var(--brand); border-color: #a5b4fc; background: var(--brand-soft); }
-
+  .chip { border: 1px solid var(--line); background: var(--card); color: var(--muted); font-size: 12.5px;
+          padding: 7px 13px; border-radius: 999px; cursor: pointer; }
+  .chip:hover { color: var(--accent-ink); border-color: var(--accent); background: var(--accent-soft); }
   .compose { display: flex; gap: 10px; padding: 14px 18px 18px; }
-  .compose .box { flex: 1; display: flex; align-items: center; background: #fff;
-                  border: 1px solid var(--line); border-radius: 12px; padding: 2px 4px 2px 14px; }
-  .compose .box:focus-within { border-color: var(--brand); box-shadow: 0 0 0 3px #4f46e522; }
-  .compose input { flex: 1; border: 0; outline: 0; font-size: 14px; padding: 11px 0; color: var(--ink); background: transparent; }
-  .compose input::placeholder { color: #9aa1b4; }
-  .send { border: 0; background: var(--brand); color: #fff; font-weight: 600; font-size: 13.5px;
-          padding: 0 20px; border-radius: 11px; cursor: pointer; }
-  .send:hover { background: var(--brand-dark); } .send:disabled { opacity: .5; cursor: default; }
+  .compose .box { flex: 1; display: flex; align-items: center; background: var(--bg2); border: 1px solid var(--line);
+                  border-radius: 13px; padding: 2px 4px 2px 15px; }
+  .compose .box:focus-within { border-color: var(--accent); }
+  .compose input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 14.5px; padding: 11px 0; }
+  .compose input::placeholder { color: var(--muted); }
 
-  @media (max-width: 860px) {
-    .wrap { grid-template-columns: 1fr; }
-    .tabs { display: none; }
-    .panel { height: auto; min-height: 520px; }
-  }
+  @media (max-width: 720px) { .cards { grid-template-columns: 1fr; } .tabs { display: none; } }
 </style>
 </head>
 <body>
   <header class="nav">
-    <div class="lead">
-      <div class="logo">H</div>
-      <div><b>Helpdesk</b> <span class="sub">Support Center</span></div>
+    <div class="brand" onclick="go('home')">
+      <div class="logo">&#9875;</div><b>Harbor</b>
     </div>
-    <nav class="tabs">
-      <a class="tab active">Support</a>
-      <a class="tab">My Orders</a>
-      <a class="tab">Billing</a>
-      <a class="tab">Account</a>
-    </nav>
+    <div class="tabs">
+      <button class="tab active" data-view="home" onclick="go('home')">Home</button>
+      <button class="tab" data-view="orders" onclick="go('orders')">My Orders</button>
+      <button class="tab" data-view="support" onclick="go('support')">Support</button>
+    </div>
     <div class="spacer"></div>
-    <div class="userchip">
-      <span class="ava" id="navAva">A</span>
-      <span class="nm" id="navName">Ananya Verma</span>
-    </div>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme" onclick="toggleTheme()">&#9790;</button>
+    <div class="userchip"><span class="ava" id="navAva">A</span><span class="nm" id="navName">Ananya</span></div>
   </header>
 
   <div class="wrap">
-    <aside>
-      <div class="card">
-        <h2>Your account</h2>
-        <div class="body">
-          <div class="acct-head">
-            <span class="ava" id="acctAva" style="width:48px;height:48px">A</span>
-            <div><div class="nm" id="acctName">Ananya Verma</div>
-                 <div class="id" id="acctId">cust_101</div></div>
-          </div>
-          <div class="field">
-            <label for="acct">Viewing as</label>
-            <select id="acct"></select>
-          </div>
-          <div class="meta-row"><span>Membership</span><span class="badge std" id="acctTier">Standard</span></div>
-          <div class="meta-row"><span>Support plan</span><strong>Email &amp; chat</strong></div>
-        </div>
+    <!-- HOME -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <span class="ava" id="heroAva">A</span>
+        <div><h1 id="heroHi">Hi Ananya &#128075;</h1><p>Welcome back — what can we help you with today?</p></div>
       </div>
-
-      <div class="card" style="margin-top:22px">
-        <h2>Need help with</h2>
-        <div class="body" style="padding:8px">
-          <ul class="help-list" id="help"></ul>
-        </div>
+      <form class="askbar" id="homeForm">
+        <input id="homeAsk" placeholder="Ask us anything — e.g. where's my order?" autocomplete="off">
+        <button class="btn" type="submit">Ask</button>
+      </form>
+      <div class="cards">
+        <button class="ac" onclick="seed('Where is my order right now?')">
+          <div class="ci mint">&#128230;</div><h3>Track an order</h3><p>See where your package is.</p></button>
+        <button class="ac" onclick="go('orders')">
+          <div class="ci sky">&#128179;</div><h3>Orders &amp; delivery</h3><p>Review your recent purchase.</p></button>
+        <button class="ac" onclick="seed('I would like to return an item.')">
+          <div class="ci peach">&#8617;&#65039;</div><h3>Returns &amp; refunds</h3><p>Start a return in minutes.</p></button>
+        <button class="ac" onclick="go('support')">
+          <div class="ci lilac">&#128172;</div><h3>Chat with us</h3><p>Talk to our support team.</p></button>
       </div>
-    </aside>
+    </section>
 
-    <main>
-      <div class="card panel">
-        <div class="panel-head">
-          <span class="ava">S</span>
-          <div style="flex:1">
-            <div class="t">Support conversation</div>
-            <div class="s"><span class="online"></span> A support agent is online — typically replies instantly</div>
-          </div>
-        </div>
+    <!-- ORDERS -->
+    <section class="view" id="view-orders">
+      <div class="panelhead"><h1>My Orders</h1><p>Your most recent order and its latest update.</p></div>
+      <div class="order">
+        <div class="top"><div class="ci">&#128230;</div>
+          <div style="flex:1"><b>Recent order</b><br><span>Updates appear here automatically.</span></div></div>
+        <div class="status"><div class="k">Latest update</div><div id="orderStatus">Loading your latest update…</div></div>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="view" id="view-support">
+      <div class="chat">
+        <div class="chat-head"><span class="ava">M</span>
+          <div style="flex:1"><div class="t">Maya &middot; Support</div>
+            <div class="s"><span class="online"></span> Online now &middot; usually replies in a moment</div></div></div>
         <div class="thread" id="thread"></div>
         <div class="chips" id="chips"></div>
         <form class="compose" id="form">
-          <div class="box"><input id="msg" placeholder="Describe your issue or ask about an order…" autocomplete="off"></div>
-          <button class="send" id="send" type="submit">Send</button>
+          <div class="box"><input id="msg" placeholder="Type your message…" autocomplete="off"></div>
+          <button class="btn" type="submit">Send</button>
         </form>
       </div>
-    </main>
+    </section>
   </div>
 
 <script>
-  const ACCOUNTS = [
-    { id: 'cust_101', name: 'Ananya Verma', tier: 'Standard', cls: 'std', color: '#4f46e5' },
-    { id: 'cust_102', name: 'Karan Mehta',  tier: 'Priority', cls: 'pri', color: '#d97706' },
-    { id: 'cust_103', name: 'Sana Iqbal',   tier: 'Standard', cls: 'std', color: '#0891b2' },
-  ];
-  const HELP = [
-    ['Track an order', "Where's my order?"],
-    ['Order status', 'What is my order status?'],
-    ['Change shipping address', 'I need to update my shipping address'],
-    ['Request a refund', 'I would like a refund'],
-  ];
-  const CHIPS = ["Where's my order?", 'Order status', 'Update address', 'Talk to a person'];
-
+  const CUSTOMER_ID = 'cust_101';
+  const USER = { name: 'Ananya Verma', first: 'Ananya' };
+  const CHIPS = ["Where's my order?", 'Track my delivery', 'Return an item', 'Talk to a person'];
   const el = (id) => document.getElementById(id);
-  const thread = el('thread'), form = el('form'), msg = el('msg'), send = el('send');
-  let active = ACCOUNTS[0];
+  const thread = el('thread'), send = () => el('form').querySelector('.btn');
+  let greeted = false, ordersLoaded = false;
 
-  const initials = (n) => n.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
   const now = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  function buildSelect() {
-    const s = el('acct'); s.innerHTML = '';
-    ACCOUNTS.forEach(a => {
-      const o = document.createElement('option');
-      o.value = a.id; o.textContent = a.name + ' (' + a.id + ')';
-      s.appendChild(o);
-    });
-    s.value = active.id;
-    s.onchange = () => {
-      active = ACCOUNTS.find(a => a.id === s.value);
-      sync(); greet(); msg.focus();
-    };
+  /* theme */
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    el('themeBtn').innerHTML = t === 'dark' ? '&#9728;' : '&#9790;';
+    try { localStorage.setItem('harbor-theme', t); } catch (e) {}
   }
-
-  function sync() {
-    el('navAva').textContent = initials(active.name); el('navAva').style.background = active.color;
-    el('navName').textContent = active.name;
-    el('acctAva').textContent = initials(active.name); el('acctAva').style.background = active.color;
-    el('acctName').textContent = active.name;
-    el('acctId').textContent = active.id;
-    const t = el('acctTier'); t.textContent = active.tier; t.className = 'badge ' + active.cls;
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
   }
+  (function initTheme() {
+    let t = null;
+    try { t = localStorage.getItem('harbor-theme'); } catch (e) {}
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    applyTheme(t);
+  })();
 
-  function buildHelp() {
-    const u = el('help'); u.innerHTML = '';
-    HELP.forEach(([label, q]) => {
-      const li = document.createElement('li');
-      const b = document.createElement('button');
-      b.innerHTML = '<span class="ic">&rsaquo;</span>';
-      b.appendChild(document.createTextNode(label));
-      b.onclick = () => { ask(q); };
-      li.appendChild(b); u.appendChild(li);
-    });
-  }
-
-  function buildChips() {
-    const box = el('chips'); box.innerHTML = '';
-    CHIPS.forEach(c => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'chip'; b.textContent = c;
-      b.onclick = () => { msg.value = c; msg.focus(); };
-      box.appendChild(b);
-    });
+  /* views */
+  function go(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    el('view-' + view).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.view === view));
+    if (view === 'support' && !greeted) { greet(); greeted = true; }
+    if (view === 'orders' && !ordersLoaded) { loadOrders(); ordersLoaded = true; }
+    window.scrollTo(0, 0);
   }
 
   function add(text, mine) {
     const row = document.createElement('div');
     row.className = 'row ' + (mine ? 'me' : 'bot');
-    const ava = mine ? '' : '<div class="mava">S</div>';
-    row.innerHTML = ava + '<div class="stack"><div class="bubble"></div>' +
-      '<div class="time">' + now() + '</div></div>';
+    row.innerHTML = (mine ? '' : '<div class="mava">M</div>') +
+      '<div class="stack"><div class="bubble"></div><div class="time">' + now() + '</div></div>';
     row.querySelector('.bubble').textContent = text;
     thread.appendChild(row); thread.scrollTop = thread.scrollHeight;
   }
-
   function showTyping() {
-    const r = document.createElement('div');
-    r.className = 'row bot'; r.id = 'typing';
-    r.innerHTML = '<div class="mava">S</div><div class="stack">' +
-      '<div class="bubble typing"><i></i><i></i><i></i></div></div>';
+    const r = document.createElement('div'); r.className = 'row bot'; r.id = 'typing';
+    r.innerHTML = '<div class="mava">M</div><div class="stack"><div class="bubble typing"><i></i><i></i><i></i></div></div>';
     thread.appendChild(r); thread.scrollTop = thread.scrollHeight;
   }
   const hideTyping = () => { const t = el('typing'); if (t) t.remove(); };
 
   function greet() {
     thread.innerHTML = '';
-    add('Hi ' + active.name.split(' ')[0] + ', thanks for reaching out to Helpdesk Support. ' +
-        'How can I help you today?', false);
+    add('Hi ' + USER.first + "! I'm Maya from the Harbor support team. How can I help you today?", false);
+  }
+
+  async function callAssistant(message) {
+    const res = await fetch('/ask', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customer_id: CUSTOMER_ID, message })
+    });
+    return (await res.json()).reply;
   }
 
   async function ask(text) {
-    add(text, true); msg.value = ''; send.disabled = true; showTyping();
+    add(text, true); el('msg').value = ''; send().disabled = true; showTyping();
     const started = Date.now();
     let reply;
-    try {
-      const res = await fetch('/ask', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: active.id, message: text })
-      });
-      reply = (await res.json()).reply;
-    } catch (e) { reply = 'Sorry, we could not reach support just now. Please try again.'; }
-    const wait = Math.max(0, 600 - (Date.now() - started));
-    setTimeout(() => { hideTyping(); add(reply, false); send.disabled = false; msg.focus(); }, wait);
+    try { reply = await callAssistant(text); }
+    catch (e) { reply = 'Sorry, I had trouble connecting just now — could you try again?'; }
+    const wait = Math.max(0, 650 - (Date.now() - started));
+    setTimeout(() => { hideTyping(); add(reply, false); send().disabled = false; el('msg').focus(); }, wait);
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = msg.value.trim();
-    if (text) ask(text);
-  });
+  function seed(text) { go('support'); setTimeout(() => ask(text), 180); }
 
-  buildSelect(); sync(); buildHelp(); buildChips(); greet();
+  async function loadOrders() {
+    try { el('orderStatus').textContent = await callAssistant('order status'); }
+    catch (e) { el('orderStatus').textContent = 'We could not load your update right now. Please try again shortly.'; }
+  }
+
+  /* wire up */
+  el('form').addEventListener('submit', (e) => { e.preventDefault();
+    const t = el('msg').value.trim(); if (t) ask(t); });
+  el('homeForm').addEventListener('submit', (e) => { e.preventDefault();
+    const t = el('homeAsk').value.trim(); if (t) { el('homeAsk').value = ''; seed(t); } });
+
+  (function initChips() {
+    const box = el('chips');
+    CHIPS.forEach(c => { const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = c;
+      b.onclick = () => { el('msg').value = c; el('msg').focus(); }; box.appendChild(b); });
+  })();
 </script>
 </body>
 </html>"""
