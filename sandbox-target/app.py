@@ -29,7 +29,7 @@ PAGE = """<!doctype html>
   }
   html[data-theme="dark"] {
     --bg: #1b1a26; --bg2: #201f2e; --card: #26253655; --card: #272636; --ink: #e9e7f5;
-    --muted: #9b99b8; --line: #35334a; --accent: #a99ef0; --accent-ink: #bcb2ff;
+    --muted: #b9b7d6; --line: #35334a; --accent: #a99ef0; --accent-ink: #bcb2ff;
     --accent-soft: #332f52; --bubble-bot: #2e2d41;
     --mint: #2f5c4e; --mint-ink: #9fe0c9; --peach: #6b4332; --peach-ink: #f6c3a6;
     --sky: #2d4a66; --sky-ink: #add4f4; --lilac: #4a3a63; --lilac-ink: #d8c3f2;
