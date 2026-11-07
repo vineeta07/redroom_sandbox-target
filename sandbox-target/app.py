@@ -85,7 +85,8 @@ PAGE = """<!doctype html>
   .btn:hover { background: var(--accent-ink); }
   .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .ac { text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-        padding: 20px; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
+        padding: 20px; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s;
+        color: var(--ink); font-family: inherit; }
   .ac:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(60,50,90,.12); }
   .ac .ci { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 21px;
             margin-bottom: 13px; }
@@ -94,6 +95,24 @@ PAGE = """<!doctype html>
   .ci.peach { background: var(--peach); color: var(--peach-ink); }
   .ci.sky { background: var(--sky); color: var(--sky-ink); }
   .ci.lilac { background: var(--lilac); color: var(--lilac-ink); }
+  .herobanner { background: linear-gradient(135deg, var(--lilac), var(--sky)); border: 1px solid var(--line);
+                border-radius: 22px; padding: 34px 32px; margin-bottom: 8px; box-shadow: var(--shadow); }
+  .herobanner .ava { width: 60px; height: 60px; font-size: 23px; margin-bottom: 14px; }
+  .herobanner h1 { margin: 0; font-size: 28px; font-weight: 780; color: var(--ink); }
+  .herobanner .lede { margin: 9px 0 20px; font-size: 15.5px; color: var(--ink); opacity: .85; max-width: 580px; }
+  .section-title { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+                   font-weight: 700; margin: 28px 2px 14px; }
+  .highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .hl { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
+        box-shadow: var(--shadow); }
+  .hl .ci { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; font-size: 18px; margin-bottom: 11px; }
+  .hl h4 { margin: 0 0 4px; font-size: 14.5px; color: var(--ink); }
+  .hl p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .themetip { display: flex; align-items: center; gap: 14px; margin-top: 28px; background: var(--accent-soft);
+              border: 1px solid var(--line); border-radius: 15px; padding: 16px 18px; }
+  .themetip .ti { width: 40px; height: 40px; border-radius: 11px; background: var(--card); display: grid;
+                  place-items: center; font-size: 19px; flex: none; }
+  .themetip b { color: var(--ink); } .themetip span { color: var(--muted); font-size: 13px; }
 
   /* Orders */
   .panelhead { margin: 0 0 16px; } .panelhead h1 { margin: 0; font-size: 22px; }
@@ -141,7 +160,11 @@ PAGE = """<!doctype html>
   .compose input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 14.5px; padding: 11px 0; }
   .compose input::placeholder { color: var(--muted); }
 
-  @media (max-width: 720px) { .cards { grid-template-columns: 1fr; } .tabs { display: none; } }
+  @media (max-width: 720px) {
+    .cards, .highlights { grid-template-columns: 1fr; }
+    .tabs { display: none; }
+    .herobanner { padding: 26px 22px; }
+  }
 </style>
 </head>
 <body>
@@ -162,23 +185,43 @@ PAGE = """<!doctype html>
   <div class="wrap">
     <!-- HOME -->
     <section class="view active" id="view-home">
-      <div class="hero">
+      <div class="herobanner">
         <span class="ava" id="heroAva">A</span>
-        <div><h1 id="heroHi">Hi Ananya &#128075;</h1><p>Welcome back — what can we help you with today?</p></div>
+        <h1>Hi Ananya &#128075;</h1>
+        <p class="lede">Welcome to Harbor — your all-in-one support space. Track your orders, start a return,
+          or chat with a real person, all from one calm, friendly place.</p>
+        <form class="askbar" id="homeForm">
+          <input id="homeAsk" placeholder="Ask us anything — e.g. where's my order?" autocomplete="off">
+          <button class="btn" type="submit">Ask</button>
+        </form>
       </div>
-      <form class="askbar" id="homeForm">
-        <input id="homeAsk" placeholder="Ask us anything — e.g. where's my order?" autocomplete="off">
-        <button class="btn" type="submit">Ask</button>
-      </form>
+
+      <div class="section-title">Quick actions</div>
       <div class="cards">
         <button class="ac" onclick="seed('Where is my order right now?')">
-          <div class="ci mint">&#128230;</div><h3>Track an order</h3><p>See where your package is.</p></button>
+          <div class="ci mint">&#128230;</div><h3>Track an order</h3><p>See exactly where your package is.</p></button>
         <button class="ac" onclick="go('orders')">
           <div class="ci sky">&#128179;</div><h3>Orders &amp; delivery</h3><p>Review your recent purchase.</p></button>
         <button class="ac" onclick="seed('I would like to return an item.')">
           <div class="ci peach">&#8617;&#65039;</div><h3>Returns &amp; refunds</h3><p>Start a return in minutes.</p></button>
         <button class="ac" onclick="go('support')">
           <div class="ci lilac">&#128172;</div><h3>Chat with us</h3><p>Talk to our support team.</p></button>
+      </div>
+
+      <div class="section-title">Why Harbor</div>
+      <div class="highlights">
+        <div class="hl"><div class="ci mint">&#128230;</div><h4>Live order tracking</h4>
+          <p>Up-to-the-minute status on every order, whenever you check.</p></div>
+        <div class="hl"><div class="ci peach">&#8617;&#65039;</div><h4>Effortless returns</h4>
+          <p>Start and track returns in a couple of taps — no forms to hunt down.</p></div>
+        <div class="hl"><div class="ci sky">&#128172;</div><h4>Real human support</h4>
+          <p>Our team is a message away whenever you need a hand.</p></div>
+      </div>
+
+      <div class="themetip">
+        <div class="ti">&#9790;</div>
+        <div><b>Light or dark — your call.</b>
+          <span>Tap the moon or sun in the top-right corner to switch themes anytime. We'll remember your choice.</span></div>
       </div>
     </section>
 
